@@ -2,6 +2,7 @@ package com.yupi.yupicturebackend.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -17,7 +18,7 @@ public class User {
     /**
      * id
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
@@ -66,7 +67,8 @@ public class User {
     private Date updateTime;
 
     /**
-     * 是否删除
+     * 是否删除,指明逻辑删除字段
      */
+    @TableLogic
     private Integer isDelete;
 }
