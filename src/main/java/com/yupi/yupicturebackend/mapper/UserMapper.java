@@ -1,4 +1,4 @@
-package generator.mapper;
+package com.yupi.yupicturebackend.mapper;
 
 import generator.domain.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

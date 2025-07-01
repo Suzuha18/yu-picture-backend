@@ -1,4 +1,4 @@
-package generator.service;
+package com.yupi.yupicturebackend.service;
 
 import generator.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;
