@@ -1,0 +1,47 @@
+server:
+  port: 8123
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: yu-picture-backend
+
+    # 数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://1.15.139.230:3306/SUZURI-picture
+    username: root
+
+# mybatis-plus
+mybatis-plus:
+  configuration:
+    # MyBatis 配置
+    map-underscore-to-camel-case: false
+    # 仅在开发环境打印日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: isDelete #全局逻辑删除的实体字段名
+      logic-delete-vaLue: 1 #逻辑已删除值（默认为1）
+      logic-not-delete-vaLue: 0 #逻辑未删除值（默认为θ）
+
+# 接口文档配置
+knife4j:
+  enable: true
+  openapi:
+    title: 接口文档
+    description: "`我是测试`,**你知道吗**
+    # aaa"
+#    email: xiaoymin@foxmail.com
+#    concat: 八一菜刀
+#    url: https://docs.xiaominfo.com
+    version: v1.0
+#    license: Apache 2.0
+#    license-url: https://stackoverflow.com/
+#    terms-of-service-url: https://stackoverflow.com/
+    group:
+      default:
+        api-rule: package # 接口识别规则
+        api-rule-resources: # 扫描位置
+          - com.yupi.yupicturebackend.controller
