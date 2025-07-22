@@ -12,6 +12,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://1.15.139.230:3306/SUZURI-picture
     username: root
+    password: shiliang130304
 
 # mybatis-plus
 mybatis-plus:

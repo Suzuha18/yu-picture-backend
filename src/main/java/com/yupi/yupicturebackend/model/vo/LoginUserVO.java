@@ -1,4 +1,4 @@
-package com.yupi.yupicturebackend.model.entity;
+package com.yupi.yupicturebackend.model.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -9,12 +9,11 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 用户
- * @TableName user
+ * 已登录用户试图
  */
-@TableName(value ="user")
+@TableName(value = "user")
 @Data
-public class User {
+public class LoginUserVO {
     /**
      * id
      */
@@ -26,10 +25,10 @@ public class User {
      */
     private String userAccount;
 
-    /**
-     * 密码
-     */
-    private String userPassword;
+//    /**
+//     * 密码
+//     */
+//    private String userPassword;
 
     /**
      * 用户昵称
@@ -65,12 +64,6 @@ public class User {
      * 更新时间
      */
     private Date updateTime;
-
-    /**
-     * 是否删除,指明逻辑删除字段
-     */
-    @TableLogic
-    private Integer isDelete;
 
     private static final long serialVersionUID = 1L;
 }

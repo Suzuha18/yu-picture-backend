@@ -1,7 +1,8 @@
 package com.yupi.yupicturebackend.mapper;
 
-import generator.domain.User;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yupi.yupicturebackend.model.entity.User;
 
 /**
 * @author SUZURI
