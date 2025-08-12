@@ -47,3 +47,4 @@ knife4j:
         api-rule-resources: # 扫描位置
           - com.yupi.yupicturebackend.controller
 
+
