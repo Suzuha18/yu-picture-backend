@@ -1,5 +1,4 @@
-### Custom ###
-src/main/resources/application-local.yml
+
 
 HELP.md
 target/
@@ -15,6 +14,9 @@ target/
 .settings
 .springBeans
 .sts4-cache
+
+### Custom ###
+application-local.yml
 
 ### IntelliJ IDEA ###
 .idea
