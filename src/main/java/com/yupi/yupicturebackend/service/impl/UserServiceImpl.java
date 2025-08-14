@@ -103,21 +103,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return this.getLoginUserVO(user);
     }
 
+    // 获取当前登录用户信息
     @Override
     public User getLoginUser(HttpServletRequest request) {
         // 判断是否登录
         Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
-        User curentUser = (User) userObj;
-        if (curentUser == null || curentUser.getId() == null) {
+        User currentUser = (User) userObj;
+        if (currentUser == null || currentUser.getId() == null) {
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
         // 从数据库中查询（追求性能可以注释）
-        Long userId = curentUser.getId();
-        curentUser = this.getById(userId);
-        if (curentUser == null) {
+        Long userId = currentUser.getId();
+        currentUser = this.getById(userId);
+        if (currentUser == null) {
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
-        return curentUser;
+        return currentUser;
     }
 
 
@@ -174,7 +175,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     /**
-     *
+     * 将查询请求转化为mybatis
      * @param userQueryRequest
      * @return
      */
@@ -198,6 +199,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         queryWrapper.like(StrUtil.isNotBlank(userProfile), "userProfile", userProfile);
         queryWrapper.orderBy(StrUtil.isNotEmpty(sortField), sortOrder.equals("ascend"), sortField);
         return queryWrapper;
+    }
+
+    @Override
+    public boolean isAdmin(User user) {
+        return user != null && UserRoleEnum.ADMIN.getValue().equals(user.getUserRole());
     }
 
 }
