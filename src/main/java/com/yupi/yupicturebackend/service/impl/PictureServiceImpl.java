@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yupi.yupicturebackend.exception.BusinessException;
 import com.yupi.yupicturebackend.exception.ErrorCode;
@@ -20,12 +21,16 @@ import com.yupi.yupicturebackend.model.vo.PictureVO;
 import com.yupi.yupicturebackend.service.PictureService;
 import com.yupi.yupicturebackend.mapper.PictureMapper;
 import com.yupi.yupicturebackend.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
 * @author SUZURI
@@ -141,6 +146,71 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         queryWrapper.orderBy(StrUtil.isNotEmpty(sortField), sortOrder.equals("ascend"), sortField);
         return queryWrapper;
     }
+
+    /**
+     * 通过查出来的图片，对图片信息脱敏，在找到查询到的图片对应的用户进行脱敏，然后返回
+     * @param picture
+     * @param request
+     * @return
+     */
+    @Override
+    public PictureVO getPictureVO(Picture picture, HttpServletRequest request) {
+        //对象转封装类
+        PictureVO pictureVO = PictureVO.objToVo(picture);
+
+        // 获取关联用户信息返回前端
+        Long id = pictureVO.getUserId();
+        if (id != null && id > 0) {
+            User user = userService.getById(id);
+            pictureVO.setUser(userService.getUserVO(user));
+        }
+        return pictureVO;
+    }
+
+    @Override
+    public Page<PictureVO> getPictureVOPage(Page<Picture> page, HttpServletRequest request) {
+        List<Picture> pageRecords = page.getRecords();
+        Page<PictureVO> pictureVOPage = new Page<>(page.getCurrent(), page.getSize());
+        if(pageRecords == null || pageRecords.isEmpty()){
+            return pictureVOPage;
+        }
+        // 将对象列表转换为封装脱敏对象列表
+        List<PictureVO> pictureVOList = pageRecords.stream().map(PictureVO::objToVo).collect(Collectors.toList());
+
+        // 1.查询关联用户信息
+        Set<Long> userIds = pageRecords.stream().map(Picture::getUserId).collect(Collectors.toSet());
+        Map<Long, List<User>> userMapById = userService.listByIds(userIds).stream().collect(Collectors.groupingBy(User::getId));
+        for(PictureVO pictureVO : pictureVOList){
+            Long userId = pictureVO.getUserId();
+            User user = null;
+            if(userMapById.containsKey(userId)){
+                user = userMapById.get(userId).get(0);
+            }
+            pictureVO.setUser(userService.getUserVO(user));
+        }
+        pictureVOPage.setRecords(pictureVOList);
+        return pictureVOPage;
+    }
+
+    @Override
+    public void validPicture(Picture picture) {
+        ThrowUtils.throwIf(picture == null, ErrorCode.PARAMS_ERROR);
+        // 从对象中取值
+        Long id = picture.getId();
+        String url = picture.getUrl();
+        String introduction = picture.getIntroduction();
+        // 修改数据时，id 不能为空，有参数则校验
+        ThrowUtils.throwIf(ObjUtil.isNull(id), ErrorCode.PARAMS_ERROR, "id 不能为空");
+        // 如果传入了url，才校验
+        if (StrUtil.isNotBlank(url)) {
+            ThrowUtils.throwIf(url.length() > 1024, ErrorCode.PARAMS_ERROR, "url 过长");
+        }
+        if (StrUtil.isNotBlank(introduction)) {
+            ThrowUtils.throwIf(introduction.length() > 800, ErrorCode.PARAMS_ERROR, "简介过长");
+        }
+    }
+
+
 }
 
 
