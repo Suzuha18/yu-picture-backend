@@ -125,6 +125,22 @@ public class PictureController {
     }
 
 
+
+    /**
+     * 分页获取图片列表（仅管理员可用）
+     */
+    @PostMapping("/list/page")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Page<Picture>> listPictureByPage(@RequestBody PictureQueryRequest pictureQueryRequest) {
+        long current = pictureQueryRequest.getCurrent();
+        long size = pictureQueryRequest.getPageSize();
+        // 查询数据库
+        Page<Picture> picturePage = pictureService.page(new Page<>(current, size),
+                pictureService.getQueryWrapper(pictureQueryRequest));
+        return ResultUtils.success(picturePage);
+    }
+
+
     /**
      * 分页获取图片列表（封装类）编辑照片（给用户使用）
      *
@@ -132,7 +148,7 @@ public class PictureController {
      * @param request
      * @return
      */
-    @GetMapping("/list/page/vo")
+    @PostMapping("/list/page/vo")
     public BaseResponse<Page<PictureVO>> listPictureVOPage(@RequestBody PictureQueryRequest pictureQueryRequest,
                                                            HttpServletRequest request) {
         long current = pictureQueryRequest.getCurrent();
@@ -179,7 +195,7 @@ public class PictureController {
         }
         // 操作数据库
         boolean result = pictureService.updateById(picture);
-        ThrowUtils.throwIf(result, ErrorCode.OPERATION_ERROR);
+        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         return ResultUtils.success(result);
     }
 

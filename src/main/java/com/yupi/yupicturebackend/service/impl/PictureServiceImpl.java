@@ -121,9 +121,9 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         // 从多字段中搜索
         if (StrUtil.isNotBlank(searchText)) {
             // 拼接查询条件
-            queryWrapper.and(qw -> qw.like("introduction", introduction)
+            queryWrapper.and(qw -> qw.like("name", searchText)
                     .or()
-                    .like("name", name)
+                    .like("introduction", searchText)
             );
         }
         queryWrapper.eq(ObjUtil.isNotEmpty(id), "id", id);
