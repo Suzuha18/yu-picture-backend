@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.yupi.yupicturebackend.common.BaseResponse;
 import com.yupi.yupicturebackend.common.DeleteRequest;
 import com.yupi.yupicturebackend.model.dto.picture.PictureQueryRequest;
+import com.yupi.yupicturebackend.model.dto.picture.PictureReviewRequest;
 import com.yupi.yupicturebackend.model.dto.picture.PictureUploadRequest;
 import com.yupi.yupicturebackend.model.dto.user.UserQueryRequest;
 import com.yupi.yupicturebackend.model.entity.Picture;
@@ -67,4 +68,18 @@ public interface PictureService extends IService<Picture> {
      */
     public void validPicture(Picture picture);
 
+    /**
+     * 图片审核
+     */
+    void doPictureReview(PictureReviewRequest pictureReviewRequest, User loginuser);
+
+//     /**
+//      * 删除图片
+//      * @param deleteRequest
+//      * @param request
+//      * @return
+//      */
+//     boolean deletePicture(DeleteRequest deleteRequest, HttpServletRequest request);
+
+    void fillReviewParams(Picture picture, User loginUser);
 }

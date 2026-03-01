@@ -3,6 +3,7 @@ package com.yupi.yupicturebackend.model.enums;
 import cn.hutool.core.util.ObjUtil;
 import lombok.Getter;
 
+// 需要给状态枚举值，防止出错
 @Getter
 public enum PictureReviewStatusEnum {
     REVIEWING("待审核", 0),
