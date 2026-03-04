@@ -101,5 +101,9 @@ public interface PictureService extends IService<Picture> {
             User loginUser
     );
 
-
+    /**
+     *
+     * @param oldPicture
+     */
+    void clearPictureFile(Picture oldPicture);
 }

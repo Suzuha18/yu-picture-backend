@@ -1,12 +1,11 @@
-package com.yupi.yupicturebackend.model.entity;
+package generator.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 /**
  * 图片
@@ -18,18 +17,13 @@ public class Picture {
     /**
      * id
      */
-    @TableId(type = IdType.ASSIGN_ID)
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
      * 图片 url
      */
     private String url;
-
-    /**
-     * 缩略图 url
-     */
-    private String thumbnailUrl;
 
     /**
      * 图片名称
@@ -97,7 +91,12 @@ public class Picture {
     private Date updateTime;
 
     /**
-     * 状态：0-待审核; 1-通过; 2-拒绝
+     * 是否删除
+     */
+    private Integer isDelete;
+
+    /**
+     * 审核状态：0-待审核; 1-通过; 2-拒绝
      */
     private Integer reviewStatus;
 
@@ -107,7 +106,7 @@ public class Picture {
     private String reviewMessage;
 
     /**
-     * 审核人 id
+     * 审核人 ID
      */
     private Long reviewerId;
 
@@ -115,11 +114,4 @@ public class Picture {
      * 审核时间
      */
     private Date reviewTime;
-
-
-    /**
-     * 是否删除
-     */
-    @TableLogic
-    private Integer isDelete;
 }
