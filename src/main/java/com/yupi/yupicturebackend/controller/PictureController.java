@@ -1,11 +1,16 @@
 package com.yupi.yupicturebackend.controller;
 
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.yupi.yupicturebackend.annotation.AuthCheck;
+import com.yupi.yupicturebackend.api.aliyunai.AliYunAiApi;
+import com.yupi.yupicturebackend.api.aliyunai.model.CreateOutPaintingTaskResponse;
+import com.yupi.yupicturebackend.api.aliyunai.model.CreatePictureOutPaintingTaskRequest;
+import com.yupi.yupicturebackend.api.aliyunai.model.GetOutPaintingTaskResponse;
 import com.yupi.yupicturebackend.api.imagesearch.ImageSearchApiFacade;
 import com.yupi.yupicturebackend.api.imagesearch.model.ImageSearchResult;
 import com.yupi.yupicturebackend.common.BaseResponse;
@@ -53,6 +58,8 @@ public class PictureController {
     private StringRedisTemplate stringRedisTemplate;
     @Resource
     private SpaceService spaceService;
+    @Resource
+    private AliYunAiApi aliYunAiApi;
 
     /**
      * 本地缓存，热点数据优先从本地缓存获取，减少 Redis 访问压力
@@ -424,6 +431,31 @@ public class PictureController {
         User loginUser = userService.getLoginUser(request);
         List<PictureVO> result = pictureService.searchPictureByColor(spaceId, picColor, loginUser);
         return ResultUtils.success(result);
+    }
+
+    /**
+     * 创建 AI 扩图任务
+     */
+    @PostMapping("/out_painting/create_task")
+    public BaseResponse<CreateOutPaintingTaskResponse> createPictureOutPaintingTask(
+            @RequestBody CreatePictureOutPaintingTaskRequest createPictureOutPaintingTaskRequest,
+            HttpServletRequest request) {
+        if (createPictureOutPaintingTaskRequest == null || createPictureOutPaintingTaskRequest.getPictureId() == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        User loginUser = userService.getLoginUser(request);
+        CreateOutPaintingTaskResponse response = pictureService.createPictureOutPaintingTask(createPictureOutPaintingTaskRequest, loginUser);
+        return ResultUtils.success(response);
+    }
+
+    /**
+     * 查询 AI 扩图任务
+     */
+    @GetMapping("/out_painting/get_task")
+    public BaseResponse<GetOutPaintingTaskResponse> getPictureOutPaintingTask(String taskId) {
+        ThrowUtils.throwIf(StrUtil.isBlank(taskId), ErrorCode.PARAMS_ERROR);
+        GetOutPaintingTaskResponse task = aliYunAiApi.getOutPaintingTask(taskId);
+        return ResultUtils.success(task);
     }
 
 

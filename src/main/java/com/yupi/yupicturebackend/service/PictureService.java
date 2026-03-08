@@ -4,6 +4,8 @@ package com.yupi.yupicturebackend.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yupi.yupicturebackend.api.aliyunai.model.CreateOutPaintingTaskResponse;
+import com.yupi.yupicturebackend.api.aliyunai.model.CreatePictureOutPaintingTaskRequest;
 import com.yupi.yupicturebackend.common.BaseResponse;
 import com.yupi.yupicturebackend.common.DeleteRequest;
 import com.yupi.yupicturebackend.exception.BusinessException;
@@ -123,4 +125,6 @@ public interface PictureService extends IService<Picture> {
     void editPicture(PictureEditRequest pictureEditRequest, User loginUser);
 
     List<PictureVO> searchPictureByColor(Long spaceId, String picColor, User loginUser);
+
+    CreateOutPaintingTaskResponse createPictureOutPaintingTask(CreatePictureOutPaintingTaskRequest createPictureOutPaintingTaskRequest, User loginUser);
 }

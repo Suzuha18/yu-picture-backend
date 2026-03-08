@@ -146,7 +146,7 @@ public class FileManager {
         ThrowUtils.throwIf(multipartFile == null, ErrorCode.PARAMS_ERROR, "文件不能为空");
         long fileSize = multipartFile.getSize();
         final long ONE_MB = 1024 * 1024;
-        ThrowUtils.throwIf(fileSize > 5 * ONE_MB, ErrorCode.PARAMS_ERROR, "单个文件大小不能超过5MB");
+        ThrowUtils.throwIf(fileSize > 10 * ONE_MB, ErrorCode.PARAMS_ERROR, "单个文件大小不能超过10MB");
         // 2 校验文件后缀
         String fileSuffix = FileUtil.getSuffix(multipartFile.getOriginalFilename());
         // 允许上传的文件后缀列表
