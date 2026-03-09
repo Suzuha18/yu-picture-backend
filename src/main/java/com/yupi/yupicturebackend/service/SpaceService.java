@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 * @description 针对表【space(空间)】的数据库操作Service
 * @createDate 2026-03-04 23:28:13
 */
-public interface SpaceService extends IService<Space> {
+public interface  SpaceService extends IService<Space> {
     /**
      * 将查询条件转化为QueryWrapper
      *
@@ -62,4 +62,5 @@ public interface SpaceService extends IService<Space> {
      */
     long addSpace(SpaceAddRequest spaceAddRequest, User loginUser);
 
+    void checkSpaceAuth(User loginUser, Space space);
 }
