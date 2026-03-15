@@ -26,3 +26,10 @@ ALTER TABLE picture
 
 -- 创建索引
 CREATE INDEX idx_spaceId ON picture (spaceId);
+
+-- 添加新列，用于标识空间的访问权限
+-- 空间类型：0-私有空间（仅创建者可见） 1-团队空间（创建者和指定成员可见）
+ALTER TABLE space
+    ADD COLUMN spaceType int default 0 not null comment '空间类型：0-私有 1-团队';
+
+CREATE INDEX idx_spaceType ON space (spaceType);

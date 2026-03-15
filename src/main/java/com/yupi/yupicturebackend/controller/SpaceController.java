@@ -13,6 +13,7 @@ import com.yupi.yupicturebackend.constant.UserConstant;
 import com.yupi.yupicturebackend.exception.BusinessException;
 import com.yupi.yupicturebackend.exception.ErrorCode;
 import com.yupi.yupicturebackend.exception.ThrowUtils;
+import com.yupi.yupicturebackend.manager.auth.SpaceUserAuthManager;
 import com.yupi.yupicturebackend.model.dto.picture.*;
 import com.yupi.yupicturebackend.model.dto.space.*;
 import com.yupi.yupicturebackend.model.entity.Picture;
@@ -53,6 +54,8 @@ public class SpaceController {
     private UserService userService;
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+    @Resource
+    private SpaceUserAuthManager spaceUserAuthManager;
 
     /**
      * 更新空间，仅仅管理员
@@ -117,6 +120,10 @@ public class SpaceController {
         ThrowUtils.throwIf(space == null, ErrorCode.NOT_FOUND_ERROR);
         // 数据脱敏，别忘了把用户信息一并分装
         SpaceVO spaceVO = spaceService.getSpaceVO(space, request);
+        User loginUser = userService.getById(space.getUserId());
+        List<String> permissionList = spaceUserAuthManager.getPermissionList(space,loginUser);
+        spaceVO.setPermissionList(permissionList);
+
         return ResultUtils.success(spaceVO);
     }
 

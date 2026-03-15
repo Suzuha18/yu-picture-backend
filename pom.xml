@@ -52,8 +52,8 @@
         <!--        hutool万能工具库 https://doc.hutool.cn/pages/ai/-->
         <dependency>
             <groupId>cn.hutool</groupId>
-            <artifactId>hutool-ai</artifactId>
-            <version>5.8.38</version>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.26</version>
         </dependency>
         <!--        - 接口文档快速生成：knife4j https://doc.xiaominfo.com/docs/quick-start-->
         <dependency>
@@ -100,6 +100,32 @@
             <artifactId>spring-session-data-redis</artifactId>
         </dependency>
 
+        <!-- Sa-Token 整合 RedisTemplate -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-redis-template</artifactId>
+            <version>1.45.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot-starter</artifactId>
+            <version>1.45.0</version>
+        </dependency>
+
+        <!-- 提供 Redis 连接池 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+        <!-- 分库分表 -->
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
+            <version>5.2.0</version>
+        </dependency>
+
 
     </dependencies>
 
@@ -126,6 +152,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
         </dependencies>
 
     </dependencyManagement>
